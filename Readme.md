@@ -68,6 +68,12 @@ POST /api/events/createEvent – Create Event (Admin)
 PUT /api/events/updateEvent – Update Event (Admin)
 
 DELETE /api/events/deleteEvent – Delete Event (Admin)
+
+🔖 Booking
+
+POST /api/booking/createBooking – Create Booking 
+
+DELETE /api/booking/deleteBooking – Delete Booking
 ```
 
 👨‍💻 Developed by
