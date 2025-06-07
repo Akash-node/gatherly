@@ -65,6 +65,9 @@ PUT api/users/changePassword - Change password
 
 POST /api/events/createEvent – Create Event (Admin)
 
+PUT /api/events/updateEvent – Update Event (Admin)
+
+DELETE /api/events/deleteEvent – Delete Event (Admin)
 ```
 
 👨‍💻 Developed by
