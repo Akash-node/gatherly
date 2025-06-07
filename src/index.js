@@ -5,12 +5,14 @@ const cookieParser = require('cookie-parser');
 const connectdb = require("./database/connectDb.js")
 const userRouter = require("./routes/user.route.js");
 const eventRouter = require('./routes/event.route.js')
+const bookingRouter = require('./routes/booking.route.js')
 
 app.use(express.json())
 app.use(cookieParser())
 
 app.use("/api/users", userRouter);
 app.use("/api/events", eventRouter);
+app.use("/api/booking", bookingRouter);
 
 connectdb()
 .then(() => {

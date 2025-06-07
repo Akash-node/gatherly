@@ -105,4 +105,15 @@ const deleteEvent = async (req, res) => {
   }
 };
 
-module.exports = { eventCreation, updateEventDetails, deleteEvent };
+//--------------Retreive All Event-----------------------
+
+const retreiveEvents = async (req,res) => {
+  const eventData = await eventModel.find()
+  if (!eventData) {
+      res.status(404).json({ message: "Events not Retreive!!!" });
+    } else {
+      res.status(200).json(eventData)
+    }
+}
+
+module.exports = { eventCreation, updateEventDetails, deleteEvent, retreiveEvents};
