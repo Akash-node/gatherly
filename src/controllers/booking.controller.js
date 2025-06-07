@@ -1,7 +1,6 @@
 const eventModel = require("../models/event.model");
-const userModel = require("../models/user.model");
 const bookingModel = require("../models/booking.model");
-const { json } = require("express");
+
 
 //--------------Create Booking----------------------
 

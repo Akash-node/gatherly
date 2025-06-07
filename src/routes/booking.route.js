@@ -6,7 +6,7 @@ const {isAdmin} = require("../middleware/isAdmin.js")
 const router = express.Router();
 
 router.route("/eventBooking/:id").post(verifyJwt,createBooking);
-router.route("/deleteBooking/:id").post(verifyJwt,deleteBooking);
+router.route("/deleteBooking/:id").delete(verifyJwt,deleteBooking);
 
 
 module.exports = router;
