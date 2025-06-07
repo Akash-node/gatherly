@@ -65,15 +65,15 @@ PUT api/users/changePassword - Change password
 
 POST /api/events/createEvent – Create Event (Admin)
 
-PUT /api/events/updateEvent – Update Event (Admin)
+PUT /api/events/updateEvent/:id – Update Event (Admin)
 
-DELETE /api/events/deleteEvent – Delete Event (Admin)
+DELETE /api/events/deleteEvent/:id – Delete Event (Admin)
 
 🔖 Booking
 
-POST /api/booking/createBooking – Create Booking 
+POST /api/booking/createBooking/:id – Create Booking 
 
-DELETE /api/booking/deleteBooking – Delete Booking
+DELETE /api/booking/deleteBooking/:id – Delete Booking
 ```
 
 👨‍💻 Developed by
