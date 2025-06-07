@@ -36,7 +36,7 @@ Gatherly is a powerful and intuitive event management web application that allow
 ```
 Gatherly/
 │
-├── controllers/ # Route handlers (User & Event logic)
+├── controllers/ # Route handlers (User, Event & Booking logic)
 ├── models/ # Mongoose schemas
 ├── routes/ # Express route definitions
 ├── middleware/ # Auth middleware for protected routes
