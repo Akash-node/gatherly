@@ -112,7 +112,7 @@ const retreiveEvents = async (req,res) => {
   if (!eventData) {
       res.status(404).json({ message: "Events not Retreive!!!" });
     } else {
-      res.status(200).json(eventData)
+      res.status(200).json({"total" : eventData.length, eventData})
     }
 }
 
