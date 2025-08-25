@@ -1,14 +1,23 @@
 require('dotenv').config();
 const express = require('express')
 const app = express()
+const cors = require('cors')
 const cookieParser = require('cookie-parser');
-const connectdb = require("./database/connectDb.js")
-const userRouter = require("./routes/user.route.js");
-const eventRouter = require('./routes/event.route.js')
-const bookingRouter = require('./routes/booking.route.js')
+const connectdb = require("./src/database/connectDb.js")
+const userRouter = require("./src/routes/user.route.js");
+const eventRouter = require('./src/routes/event.route.js')
+const bookingRouter = require('./src/routes/booking.route.js')
+
+// Enable CORS for all origins and all routes
+app.use(cors());
+
 
 app.use(express.json())
 app.use(cookieParser())
+
+// app.use("/", (req,res)=> {
+//     res.send("Hello Akash, Your server is running!!!")
+// })
 
 app.use("/api/users", userRouter);
 app.use("/api/events", eventRouter);
