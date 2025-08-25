@@ -9,7 +9,11 @@ const eventRouter = require('./src/routes/event.route.js')
 const bookingRouter = require('./src/routes/booking.route.js')
 
 // Enable CORS for all origins and all routes
-app.use(cors({ origin: "*" }));
+app.use(cors({
+  origin: "http://localhost:8081",  // Replace with your deployed frontend URL
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 
 
 app.use(express.json())
