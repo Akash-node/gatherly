@@ -23,6 +23,10 @@ app.use("/api/users", userRouter);
 app.use("/api/events", eventRouter);
 app.use("/api/booking", bookingRouter);
 
+app.get("/hello",(req,res)=>{
+    res.json({message:"Server is Successfully Deployed!!!"})
+})
+
 connectdb()
 .then(() => {
     app.listen(process.env.PORT || 3000, () => {
