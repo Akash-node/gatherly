@@ -116,4 +116,16 @@ const retreiveEvents = async (req,res) => {
     }
 }
 
-module.exports = { eventCreation, updateEventDetails, deleteEvent, retreiveEvents};
+//--------------Retreive Event From ID-----------------------
+
+const retreiveEventById = async (req,res) => {
+  const eventId = req.params.id;
+  const eventData = await eventModel.findById(eventId)
+   if (!eventData) {
+      res.status(404).json({ message: "Event not Retreive!!!" });
+    } else {
+      res.status(200).json(eventData)
+    }
+}
+
+module.exports = { eventCreation, updateEventDetails, deleteEvent, retreiveEvents, retreiveEventById};

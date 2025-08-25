@@ -9,7 +9,7 @@ const eventRouter = require('./src/routes/event.route.js')
 const bookingRouter = require('./src/routes/booking.route.js')
 
 // Enable CORS for all origins and all routes
-app.use(cors());
+app.use(cors({ origin: "*" }));
 
 
 app.use(express.json())
