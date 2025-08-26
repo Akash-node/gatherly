@@ -32,11 +32,12 @@ const eventCreation = async (req, res) => {
     return res.status(500).json({ message: "Failed to create event" });
   }
   return res
+    .status(201)
     .json({
       newEvent,
       message: "New Event created successfully",
     })
-    .status(201);
+    ;
 };
 
 //--------------Update Event Details-----------------------

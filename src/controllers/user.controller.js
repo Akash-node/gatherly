@@ -96,7 +96,8 @@ const userLogin = async (req,res) =>{
 
       res.cookie("JwtToken",JwtToken,{
         httpOnly: true,
-        secure: process.env.COOKIE_SECURITY
+        secure: false,
+        sameSite : "lax"
 })
 
       return res.status(200).json({
