@@ -19,11 +19,7 @@ const eventSchema = new Schema( {
     },
     time: {
       type: String,
-      required: true,
-      default: () => {
-      const now = new Date();
-      return now.toTimeString().slice(0, 5); // "HH:MM"
-    },
+      required: true
     },
     venue: {
       type: String,
