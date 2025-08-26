@@ -17,10 +17,12 @@ const eventSchema = new Schema( {
       required: true,
       default: Date.now
     },
-    time: {
-      type: String,
-      required: true
-    },
+ time: {
+  type: String,
+  required: true,
+  default: () => new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
+}
+,
     venue: {
       type: String,
       required: true,

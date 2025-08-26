@@ -8,7 +8,7 @@ const userRouter = require("./src/routes/user.route.js");
 const eventRouter = require('./src/routes/event.route.js')
 const bookingRouter = require('./src/routes/booking.route.js')
 
-// Enable CORS for all origins and all routes
+// Enable CORS
 app.use(cors({
   origin: "http://localhost:8081",  // Replace with your deployed frontend URL
   methods: ["GET", "POST", "PUT", "DELETE"],
