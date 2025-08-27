@@ -11,28 +11,24 @@ const sendMail = async (toEmail, username) => {
       },
     });
 
-    const mailOptions = {
-      from: process.env.GMAIL_USER,
-      to: toEmail,
-      subject: "Welcome to Gatherly 🎉",
-      text: `Hello ${username},\n\nThank you for registering at Gatherly! We are excited to have you onboard.\n\nVisit us: https://gatherly07.netlify.app/\n\nBest Regards,\nGatherly Team`,
+  const mailOptions = {
+  from: `"Gatherly Team" <${process.env.EMAIL_USER}>`,
+  to: email,
+  subject: "Welcome to Gatherly 🎉",
+  text: `Hello ${username}, Thanks for joining Gatherly! Visit: https://gatherly07.netlify.app/`,
+  html: `
+    <p>Hello <strong>${username}</strong>,</p>
+    <p>Thanks for joining <b>Gatherly</b>! 🎉</p>
+    <p><a href="https://gatherly07.netlify.app/" 
+          style="padding:10px 20px;background:#4CAF50;color:white;
+          border-radius:5px;text-decoration:none;">Visit Gatherly</a></p>
+    <br/>
+    <p>Best Regards,<br/>Gatherly Team</p>
+    <hr/>
+    <small>If you didn’t request this, you can ignore this email.</small>
+  `
+};
 
-      html: `
-  <p>Hello <strong>${username}</strong>,</p>
-  <p>Thank you for registering at <b>Gatherly</b>! 🎉</p>
-  <p>We are excited to have you onboard.</p>
-  <br/>
-  <a href="https://gatherly07.netlify.app/" 
-     style="display:inline-block;padding:12px 24px;
-            background-color:#4CAF50;color:#fff;
-            text-decoration:none;border-radius:6px;
-            font-weight:bold;">
-    Visit Gatherly
-  </a>
-  <br/><br/>
-  <p>Best Regards,<br/>Gatherly Team</p>
-`,
-    };
 
     // Send mail
     const info = await transporter.sendMail(mailOptions);
