@@ -12,8 +12,8 @@ const sendMail = async (toEmail, username) => {
     });
 
   const mailOptions = {
-  from: `"Gatherly Team" <${process.env.EMAIL_USER}>`,
-  to: email,
+  from: `"Gatherly Team" <${process.env.GMAIL}>`,
+  to: toEmail,
   subject: "Welcome to Gatherly 🎉",
   text: `Hello ${username}, Thanks for joining Gatherly! Visit: https://gatherly07.netlify.app/`,
   html: `
