@@ -1,6 +1,6 @@
 const eventModel = require("../models/event.model");
 const bookingModel = require("../models/booking.model");
-const {sendTicketMail} = require("../middleware/ticketgenarator")
+const { sendTicketMail } = require("../middleware/ticketgenarator");
 
 //--------------Create Booking----------------------
 
@@ -25,10 +25,8 @@ const createBooking = async (req, res) => {
     // Check if event exists
     const findEvent = await eventModel.findOne({ _id: eventid });
     if (!findEvent) {
-      return res.status(404).json({ message: "Event ID not found" });
+      return res.status(404).json({ message: "Event not found" });
     }
-
-    const eventName = findEvent.title;
 
     // Create new booking
     await bookingModel.create({
@@ -36,7 +34,18 @@ const createBooking = async (req, res) => {
       eventId: eventid,
     });
 
-    // sendTicketMail(userMail,userName,eventName)
+    //sending ticket mail with pdf
+
+    // sendTicketMail(
+    //   userMail,
+    //   userName,
+    //   userid,
+    //   eventid,
+    //   findEvent.title,
+    //   findEvent.date,
+    //   findEvent.time,
+    //   findEvent.venue
+    // );
 
     res.status(200).json({ message: "New booking created successfully" });
   } catch (error) {

@@ -4,16 +4,22 @@ const userModel = require("../models/user.model");
 //--------------Create Event-----------------------
 
 const eventCreation = async (req, res) => {
-  const { title, description, venue, price, capacity, availableSeats } =
-    req.body;
+  const {
+    title,
+    description,
+    venue,
+    price,
+    availableSeats,
+    date,
+    time,
+    category,
+  } = req.body;
 
   if (
-    [title, description, venue].some(
+    [title, description, venue, date, time, category].some(
       (field) => typeof field !== "string" || field.trim() === ""
     ) ||
-    [price, capacity, availableSeats].some(
-      (field) => field === undefined || field === null
-    )
+    [price, capacity].some((field) => field === undefined || field === null)
   ) {
     res.status(400);
     throw new Error("All fields are required");
@@ -27,33 +33,39 @@ const eventCreation = async (req, res) => {
     capacity,
     availableSeats,
     createdBy: req.user._id,
+    date,
+    time,
+    category,
   });
   if (!newEvent) {
     return res.status(500).json({ message: "Failed to create event" });
   }
-  return res
-    .status(201)
-    .json({
-      newEvent,
-      message: "New Event created successfully",
-    })
-    ;
+  return res.status(201).json({
+    newEvent,
+    message: "New Event created successfully",
+  });
 };
 
 //--------------Update Event Details-----------------------
 
 const updateEventDetails = async (req, res) => {
   const { id } = req.params;
-  const { title, description, venue, price, capacity, availableSeats } =
-    req.body;
+  const {
+    title,
+    description,
+    venue,
+    price,
+    capacity,
+    date,
+    time,
+    category,
+  } = req.body;
 
   if (
-    [title, description, venue].some(
+    [title, description, venue, date, time, category].some(
       (field) => typeof field !== "string" || field.trim() === ""
     ) ||
-    [price, capacity, availableSeats].some(
-      (field) => field === undefined || field === null
-    )
+    [price, capacity].some((field) => field === undefined || field === null)
   ) {
     res.status(400);
     throw new Error("All fields are required");
@@ -70,7 +82,9 @@ const updateEventDetails = async (req, res) => {
         venue,
         price,
         capacity,
-        availableSeats,
+        date,
+        time,
+        category,
       },
       {
         new: true, // return updated doc
@@ -108,25 +122,31 @@ const deleteEvent = async (req, res) => {
 
 //--------------Retreive All Event-----------------------
 
-const retreiveEvents = async (req,res) => {
-  const eventData = await eventModel.find()
+const retreiveEvents = async (req, res) => {
+  const eventData = await eventModel.find();
   if (!eventData) {
-      res.status(404).json({ message: "Events not Retreive!!!" });
-    } else {
-      res.status(200).json({"total" : eventData.length, eventData})
-    }
-}
+    res.status(404).json({ message: "Events not Retreive!!!" });
+  } else {
+    res.status(200).json({ total: eventData.length, eventData });
+  }
+};
 
 //--------------Retreive Event From ID-----------------------
 
-const retreiveEventById = async (req,res) => {
+const retreiveEventById = async (req, res) => {
   const eventId = req.params.id;
-  const eventData = await eventModel.findById(eventId)
-   if (!eventData) {
-      res.status(404).json({ message: "Event not Retreive!!!" });
-    } else {
-      res.status(200).json(eventData)
-    }
-}
+  const eventData = await eventModel.findById(eventId);
+  if (!eventData) {
+    res.status(404).json({ message: "Event not Retreive!!!" });
+  } else {
+    res.status(200).json(eventData);
+  }
+};
 
-module.exports = { eventCreation, updateEventDetails, deleteEvent, retreiveEvents, retreiveEventById};
+module.exports = {
+  eventCreation,
+  updateEventDetails,
+  deleteEvent,
+  retreiveEvents,
+  retreiveEventById,
+};
