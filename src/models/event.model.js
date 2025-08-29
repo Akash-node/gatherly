@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const bookingModel = require("../models/booking.model");
 
 const eventSchema = new Schema(
   {
@@ -67,5 +68,12 @@ const eventSchema = new Schema(
     timestamps: true, // adds createdAt and updatedAt automatically
   }
 );
+
+// Cascade delete bookings when an event is deleted
+eventSchema.pre("deleteOne", { document: true, query: false }, async function (next) {
+  const eventId = this._id;
+  await bookingModel.deleteMany({ eventId });
+  next();
+});
 
 module.exports = mongoose.model("Event", eventSchema);
