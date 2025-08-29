@@ -2,12 +2,9 @@ const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const bookingModel = require("../models/booking.model");
 const eventModel = require("../models/event.model");
-const {sendTicketMail} = require("../middleware/ticketgenarator");
+const { sendTicketMail } = require("../middleware/ticketgenarator");
 
 //--------------Create Booking----------------------
-
-
-
 // Razorpay instance
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -28,7 +25,9 @@ const createBooking = async (req, res) => {
       userId: userid,
     });
     if (bookingAlreadyExist) {
-      return res.status(400).json({ message: "User already booked this event" });
+      return res
+        .status(400)
+        .json({ message: "User already booked this event" });
     }
 
     // Check if event exists
@@ -66,14 +65,21 @@ const createBooking = async (req, res) => {
     });
   } catch (error) {
     console.error("❌ Error creating booking:", error.message);
-    res.status(500).json({ message: "Something went wrong while creating booking" });
+    res
+      .status(500)
+      .json({ message: "Something went wrong while creating booking" });
   }
 };
 
 // Step 2: Verify Payment after success
 const verifyPayment = async (req, res) => {
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, bookingId } = req.body;
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+      bookingId,
+    } = req.body;
 
     const body = razorpay_order_id + "|" + razorpay_payment_id;
     const expectedSignature = crypto
@@ -111,11 +117,32 @@ const verifyPayment = async (req, res) => {
       event.venue
     );
 
-    res.status(200).json({ success: true, message: "Payment verified & booking confirmed" });
+    res
+      .status(200)
+      .json({ success: true, message: "Payment verified & booking confirmed" });
   } catch (error) {
     console.error("❌ Error verifying payment:", error.message);
-    res.status(500).json({ message: "Something went wrong while verifying payment" });
+    res
+      .status(500)
+      .json({ message: "Something went wrong while verifying payment" });
   }
+};
+
+//--------------Check If user is already register or not----------------------
+
+const userAlreadyRegisterOrNot = async (req, res) => {
+  const userId = req.user.id;
+  const eventId = req.param.id;
+
+  const Registered = await bookingModel.findOne({
+    userId,
+    eventId,
+    status: "confirmed",
+    paymentStatus: "paid",
+  });
+
+   res.json({ registered: !!Registered });
+
 };
 
 //--------------Delete Booking----------------------
@@ -138,4 +165,4 @@ const deleteBooking = async (req, res) => {
   }
 };
 
-module.exports = { createBooking, deleteBooking, verifyPayment };
+module.exports = { createBooking, deleteBooking, verifyPayment, userAlreadyRegisterOrNot };
