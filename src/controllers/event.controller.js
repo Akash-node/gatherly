@@ -1,19 +1,12 @@
 const eventModel = require("../models/event.model");
 const userModel = require("../models/user.model");
+const bookingModel = require("../models/booking.model");
 
 //--------------Create Event-----------------------
 
 const eventCreation = async (req, res) => {
-  const {
-    title,
-    description,
-    venue,
-    price,
-    capacity,
-    date,
-    time,
-    category,
-  } = req.body;
+  const { title, description, venue, price, capacity, date, time, category } =
+    req.body;
 
   if (
     [title, description, venue, date, time, category].some(
@@ -49,16 +42,8 @@ const eventCreation = async (req, res) => {
 
 const updateEventDetails = async (req, res) => {
   const { id } = req.params;
-  const {
-    title,
-    description,
-    venue,
-    price,
-    capacity,
-    date,
-    time,
-    category,
-  } = req.body;
+  const { title, description, venue, price, capacity, date, time, category } =
+    req.body;
 
   if (
     [title, description, venue, date, time, category].some(
@@ -142,10 +127,34 @@ const retreiveEventById = async (req, res) => {
   }
 };
 
+//--------------Retrive All Register User On A Event-----------------------
+
+const AllUserOfAEvent = async (req, res) => {
+  const eventId = req.params.id;
+
+  const userList = await bookingModel.find({
+    eventId,
+    status: "confirmed",
+    paymentStatus: "paid",
+  });
+
+  if (!userList) {
+    return res.status(404).json({
+      message: "No User Found",
+    });
+  }
+
+  return res.status(200).json({
+    total: userList.length,
+    userList,
+  });
+};
+
 module.exports = {
   eventCreation,
   updateEventDetails,
   deleteEvent,
   retreiveEvents,
   retreiveEventById,
+  AllUserOfAEvent
 };

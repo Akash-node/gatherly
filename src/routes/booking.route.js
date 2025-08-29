@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.route("/eventBooking/:id").post(verifyJwt,createBooking);
 router.route("/verifyPayment/:id").post(verifyJwt,verifyPayment);
-router.route("/alreadyRegister/:id").post(verifyJwt,userAlreadyRegisterOrNot);
+router.route("/alreadyRegister/:id").get(verifyJwt,userAlreadyRegisterOrNot);
 router.route("/deleteBooking/:id").delete(verifyJwt,deleteBooking);
 
 
