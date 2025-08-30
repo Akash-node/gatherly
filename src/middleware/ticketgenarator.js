@@ -25,6 +25,14 @@ const sendTicketMail = async (
       day: "numeric",
     });
 
+ let [hour, minute] = eventTime.split(":").map(Number);
+let ampm = hour >= 12 ? "PM" : "AM";
+hour = hour % 12 || 12; // 0 -> 12
+eventTime = `${hour}:${minute.toString().padStart(2, "0")} ${ampm}`;
+
+console.log(formatTo12HourIntl("16:00")); // 4:00 PM
+
+
     const shortUsername = username.length > 6 ? username.slice(0, 6) : username;
     const shortEventName =
       eventName.length > 10 ? eventName.slice(0, 10) : eventName;
