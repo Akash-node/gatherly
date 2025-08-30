@@ -5,7 +5,7 @@ const eventModel = require("../models/event.model");
 
 const fetchEventByUserId = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const  userId  = req.user.id;
     const Events = await eventModel.find({ createdBy: userId });
     if (!Events || Events.length === 0) {
       return res.status(200).json({
