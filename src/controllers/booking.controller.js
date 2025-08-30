@@ -132,7 +132,7 @@ const verifyPayment = async (req, res) => {
 
 const userAlreadyRegisterOrNot = async (req, res) => {
   const userId = req.user.id;
-  const eventId = req.param.id;
+  const eventId = req.params.id;
 
   const Registered = await bookingModel.findOne({
     userId,
