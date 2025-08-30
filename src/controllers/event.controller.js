@@ -1,6 +1,7 @@
 const eventModel = require("../models/event.model");
 const userModel = require("../models/user.model");
 const bookingModel = require("../models/booking.model");
+const { uploadOnCloudinary } = require("../utils/cloudinary");
 
 //--------------Create Event-----------------------
 
@@ -18,9 +19,21 @@ const eventCreation = async (req, res) => {
     throw new Error("All fields are required");
   }
 
+  // ✅ Upload banner to Cloudinary
+  let bannerUrl = null;
+  console.log("req.file:", req.file); // 👀 Check if multer gave us a file
+
+  if (req.file) {
+  const uploadRes = await uploadOnCloudinary(req.file.path);
+  console.log("uploadRes:", uploadRes); // 👀 See what Cloudinary returns
+  bannerUrl = uploadRes?.secure_url || null;
+}
+
+
   const newEvent = await eventModel.create({
     title,
     description,
+    banner: bannerUrl, // save the uploaded file path
     venue,
     price,
     capacity,
@@ -156,5 +169,5 @@ module.exports = {
   deleteEvent,
   retreiveEvents,
   retreiveEventById,
-  AllUserOfAEvent
+  AllUserOfAEvent,
 };

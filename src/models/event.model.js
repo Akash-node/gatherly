@@ -29,6 +29,10 @@ const eventSchema = new Schema(
         "Lifestyle",
       ],
     },
+    banner : {
+      type: String,
+      require: true
+    },
     date: {
       type: Date,
       required: true,
@@ -52,11 +56,13 @@ const eventSchema = new Schema(
       type: Number,
       required: true,
       min: 0,
+      default: 0
     },
     capacity: {
       type: Number,
       required: true,
       min: 1,
+      default: 1
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId, // Reference to the user who created the post
