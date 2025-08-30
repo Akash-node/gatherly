@@ -30,7 +30,6 @@ let ampm = hour >= 12 ? "PM" : "AM";
 hour = hour % 12 || 12; // 0 -> 12
 eventTime = `${hour}:${minute.toString().padStart(2, "0")} ${ampm}`;
 
-console.log(formatTo12HourIntl("16:00")); // 4:00 PM
 
 
     const shortUsername = username.length > 6 ? username.slice(0, 6) : username;
@@ -163,9 +162,9 @@ console.log(formatTo12HourIntl("16:00")); // 4:00 PM
     doc.text(`Event: ${eventName}`, 80, 150);
     doc.image(venueIcon, 50, 180, { width: 18, height: 18 });
     doc.text(`Venue: ${eventVenue}`, 80, 180);
-    doc.image(dateIcon, 50, 180, { width: 18, height: 18 });
+    doc.image(dateIcon, 50, 210, { width: 18, height: 18 });
     doc.text(`Date: ${formattedDate}`, 80, 210);
-    doc.image(timeIcon, 50, 180, { width: 18, height: 18 });
+    doc.image(timeIcon, 50, 240, { width: 18, height: 18 });
     doc.text(`Time: ${eventTime}`, 80, 240);
 
     // QR CODE
