@@ -8,6 +8,7 @@ const userRouter = require("./src/routes/user.route.js");
 const eventRouter = require('./src/routes/event.route.js')
 const bookingRouter = require('./src/routes/booking.route.js')
 const profileRouter = require('./src/routes/profile.route.js')
+const searchRouter = require('./src/routes/serach.route.js')
 
 // Enable CORS
 app.use(cors({
@@ -28,6 +29,7 @@ app.use("/api/users", userRouter);
 app.use("/api/events", eventRouter);
 app.use("/api/booking", bookingRouter);
 app.use("/api/profile", profileRouter);
+app.use("/api/search", searchRouter);
 
 app.get("/hello",(req,res)=>{
     res.json({message:"Server is Successfully Deployed!!!"})
