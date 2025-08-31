@@ -145,5 +145,30 @@ const userAlreadyRegisterOrNot = async (req, res) => {
 
 };
 
+//--------------Update User attendence---------------------
 
-module.exports = { createBooking, verifyPayment, userAlreadyRegisterOrNot };
+const userAttend = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const eventId = req.params.eventId;
+
+    const booking = await bookingModel.findOneAndUpdate(
+      { userId, eventId },       // filter
+      { $set: { attend: true }}, // update
+      { new: true }              // return updated document
+    );
+
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+    return res.status(200).json({ message: "Attendance updated", booking });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+module.exports = { createBooking, verifyPayment, userAlreadyRegisterOrNot, userAttend };

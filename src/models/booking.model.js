@@ -31,6 +31,10 @@ const bookingSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
+    attend: {
+      type: Boolean,
+      default: false
+    },
     orderId: {
       type: String // Razorpay order_id
     },
