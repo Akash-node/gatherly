@@ -120,13 +120,21 @@ const deleteEvent = async (req, res) => {
 //--------------Retreive All Event-----------------------
 
 const retreiveEvents = async (req, res) => {
-  const eventData = await eventModel.find();
-  if (!eventData) {
-    res.status(404).json({ message: "Events not Retreive!!!" });
-  } else {
+  try {
+    // find all events and sort by createdAt (latest first)
+    const eventData = await eventModel.find().sort({ createdAt: -1 });
+
+    if (!eventData || eventData.length === 0) {
+      return res.status(404).json({ message: "Events not Retrieved!!!" });
+    }
+
     res.status(200).json({ total: eventData.length, eventData });
+  } catch (error) {
+    console.error("Error retrieving events:", error);
+    res.status(500).json({ message: "Server error while retrieving events" });
   }
 };
+
 
 //--------------Retreive Event From ID-----------------------
 
