@@ -75,18 +75,19 @@ const eventSchema = new Schema(
   }
 );
 
-// Cascade delete bookings when an event is deleted
-eventSchema.pre("deleteMany", async function (next) {
-  const filter = this.getFilter(); // events being deleted
-  const events = await this.model.find(filter);
-
-  const eventIds = events.map(e => e._id);
-  if (eventIds.length > 0) {
-    await bookingModel.deleteMany({ eventId: { $in: eventIds } });
+// Cascade delete bookings when a single event is deleted (findByIdAndDelete / findOneAndDelete)
+eventSchema.pre("findOneAndDelete", async function (next) {
+  try {
+    const event = await this.model.findOne(this.getFilter()); // get the event being deleted
+    if (event) {
+      await bookingModel.deleteMany({ eventId: event._id }); // delete related bookings
+    }
+    next();
+  } catch (err) {
+    next(err);
   }
-
-  next();
 });
+
 
 
 module.exports = mongoose.model("Event", eventSchema);
