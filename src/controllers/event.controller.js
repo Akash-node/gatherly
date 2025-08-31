@@ -164,10 +164,13 @@ const AllUserOfAEvent = async (req, res) => {
       message: "No User Found",
     });
   }
+  const userIds = userList.map((b) => b.userId);
+
+  const userDetails = await userModel.find({ _id: { $in: userIds } })
 
   return res.status(200).json({
     total: userList.length,
-    userList,
+    userDetails,
   });
 };
 
