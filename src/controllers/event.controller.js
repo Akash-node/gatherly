@@ -166,7 +166,7 @@ const AllUserOfAEvent = async (req, res) => {
   }
   const userIds = userList.map((b) => b.userId);
 
-  const userDetails = await userModel.find({ _id: { $in: userIds } })
+  const userDetails = await userModel.find({ _id: { $in: userIds } }).select("-password")
 
   return res.status(200).json({
     total: userList.length,
