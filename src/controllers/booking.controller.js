@@ -147,7 +147,7 @@ const userAlreadyRegisterOrNot = async (req, res) => {
 
 //--------------Update User attendence---------------------
 
-const userAttend = async (req, res) => {
+const upadteUserAttendence = async (req, res) => {
   try {
     const userId = req.user.id;
     const eventId = req.params.eventId;
@@ -169,6 +169,31 @@ const userAttend = async (req, res) => {
   }
 };
 
+//--------------Retreive Attended Users---------------------
 
+const attendedUsers = async (req,res) => {
+  const eventId = req.params.eventId;
+  
+    const userList = await bookingModel.find({
+      eventId,
+      status: "confirmed",
+      paymentStatus: "paid",
+      attend: true
+    });
+  
+    if (!userList) {
+      return res.status(404).json({
+        message: "No User Found",
+      });
+    }
+    const userIds = userList.map((b) => b.userId);
+  
+    const userDetails = await userModel.find({ _id: { $in: userIds } }).select("-password")
+  
+    return res.status(200).json({
+      total: userList.length,
+      userDetails,
+    });
+}
 
-module.exports = { createBooking, verifyPayment, userAlreadyRegisterOrNot, userAttend };
+module.exports = { createBooking, verifyPayment, userAlreadyRegisterOrNot, upadteUserAttendence, attendedUsers };
