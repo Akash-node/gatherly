@@ -31,7 +31,7 @@ const fetchTotalEventAUserRegister = async (req, res) => {
       userId,
       status: "confirmed",
       paymentStatus: "paid",
-    });
+    }).sort({ createdAt: -1 });
 
     if (!allEvent || allEvent.length === 0) {
       return res.status(200).json({
@@ -45,7 +45,7 @@ const fetchTotalEventAUserRegister = async (req, res) => {
     const eventIds = allEvent.map((b) => b.eventId);
 
     // Fetch all events with those IDs
-    const evntDetails = await eventModel.find({ _id: { $in: eventIds } }).sort({ createdAt: -1 });
+    const evntDetails = await eventModel.find({ _id: { $in: eventIds } })
 
     return res.status(200).json({
       total: allEvent.length,
