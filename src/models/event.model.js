@@ -31,7 +31,7 @@ const eventSchema = new Schema(
     },
     banner : {
       type: String,
-      require: true
+      required: true
     },
     date: {
       type: Date,
