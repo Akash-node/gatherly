@@ -54,50 +54,66 @@ const eventCreation = async (req, res) => {
 //--------------Update Event Details-----------------------
 
 const updateEventDetails = async (req, res) => {
-  const { id } = req.params;
-  const { title, description, venue, price, capacity, date, time, category } =
-    req.body;
+  try {
+    const { id } = req.params;
+    const { title, description, venue, price, capacity, date, time, category } =
+      req.body;
 
-  if (
-    [title, description, venue, date, time, category].some(
-      (field) => typeof field !== "string" || field.trim() === ""
-    ) ||
-    [price, capacity].some((field) => field === undefined || field === null)
-  ) {
-    res.status(400);
-    throw new Error("All fields are required");
-  }
-
-  const findEvent = await eventModel.findOne({ _id: id });
-
-  if (req.user.id == findEvent.createdBy) {
-    const updatedEvent = await eventModel.findByIdAndUpdate(
-      id,
-      {
-        title,
-        description,
-        venue,
-        price,
-        capacity,
-        date,
-        time,
-        category,
-      },
-      {
-        new: true, // return updated doc
-        runValidators: true, // apply schema validation
-      }
-    );
-
-    if (!updatedEvent) {
-      res.status(404).json({ message: "Event not found!!!" });
-    } else {
-      res.status(200).json({ message: "Event updated", event: updatedEvent });
+    // Validate fields
+    if (
+      [title, description, venue, date, time, category].some(
+        (field) => typeof field !== "string" || field.trim() === ""
+      ) ||
+      [price, capacity].some((field) => field === undefined || field === null)
+    ) {
+      return res.status(400).json({ message: "All fields are required" });
     }
-  } else {
-    res.status(404).json({ message: "You dont have access on this event!!!" });
+
+    // Find event
+    const findEvent = await eventModel.findById(id);
+    if (!findEvent) {
+      return res.status(404).json({ message: "Event not found!!!" });
+    }
+
+    // Check ownership
+    if (req.user.id !== findEvent.createdBy.toString()) {
+      return res
+        .status(403)
+        .json({ message: "You don't have access to this event!!!" });
+    }
+
+    // Prepare update object
+    const updateData = {
+      title,
+      description,
+      venue,
+      price,
+      capacity,
+      date,
+      time,
+      category,
+    };
+
+    // 🔹 Handle banner update if new file is uploaded
+    if (req.file) {
+      updateData.banner = req.file.secure_url; // Cloudinary gives `path` or `secure_url`
+    }
+
+    // Update event
+    const updatedEvent = await eventModel.findByIdAndUpdate(id, updateData, {
+      new: true, // return updated doc
+      runValidators: true, // apply schema validation
+    });
+
+    return res
+      .status(200)
+      .json({ message: "Event updated", event: updatedEvent });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
 
 //--------------Delete Event-----------------------
 
