@@ -149,8 +149,7 @@ const userAlreadyRegisterOrNot = async (req, res) => {
 
 const upadteUserAttendence = async (req, res) => {
   try {
-    const userId = req.user.id;
-    const eventId = req.params.eventId;
+    const {userId , eventId } = req.body;
 
     const booking = await bookingModel.findOneAndUpdate(
       { userId, eventId },       // filter

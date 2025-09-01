@@ -20,32 +20,110 @@ const sendMail = async (toEmail, username) => {
       from: `"Gatherly Team" <${process.env.GMAIL}>`,
       to: toEmail,
       subject: "Welcome to Gatherly 🎉",
-      text: `Hello ${username}, Thanks for joining Gatherly! Visit: https://gatherly07.netlify.app/`,
+      text: `Hello ${username}, Thanks for joining Gatherly! Visit: https://gatherly07.netlify.app`,
       html: `
-        <p>Hello <strong>${username}</strong>,</p>
-        <p>Thanks for joining <b>Gatherly</b>! 🎉</p>
-        <p>
-          <a href="https://gatherly07.netlify.app/" 
-             style="padding:10px 20px;background:#4CAF50;color:white;
-             border-radius:5px;text-decoration:none;">
-             Visit Gatherly
-          </a>
-        </p>
-        <br/>
-        <p>Your QR Ticket:</p>
-        <img src="cid:qrimage" alt="QR Code"/>
-        <br/>
-        <p>Best Regards,<br/>Gatherly Team</p>
-        <hr/>
-        <small>If you didn’t request this, you can ignore this email.</small>
+        <html lang="en" style="margin:0;padding:0;">
+  <head>
+    <meta charset="utf-8">
+    <meta name="x-apple-disable-message-reformatting">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome</title>
+    <style>
+      /* Dark mode tweaks for clients that respect prefers-color-scheme */
+      @media (prefers-color-scheme: dark) {
+        .wrapper { background:#0f172a !important; }
+        .card { background:#111827 !important; border-color:#1f2937 !important; }
+        .text { color:#e5e7eb !important; }
+        .muted { color:#9ca3af !important; }
+        .btn { background:linear-gradient(135deg,#8b5cf6,#3b82f6) !important; }
+      }
+      /* Mobile fix for Outlook on iOS & Gmail */
+      @media only screen and (max-width:600px) {
+        .container { width:100% !important; padding:16px !important; }
+        .h1 { font-size:22px !important; }
+        .btn { display:block !important; width:100% !important; }
+      }
+    </style>
+  </head>
+  <body style="margin:0;padding:0;background:#f3f4f6;">
+    <table class="wrapper" role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background:#f3f4f6;padding:24px 0;">
+      <tr>
+        <td align="center">
+          <table class="container" role="presentation" cellpadding="0" cellspacing="0" width="600" style="width:600px;max-width:100%;background:transparent;padding:0 24px;">
+            <!-- Header -->
+            <tr>
+              <td align="center" style="padding:8px 0 16px;">
+                <a href="https://gatherly07.netlify.app" style="text-decoration:none;">
+                  <div style="font-family:Inter,Segoe UI,Arial,sans-serif;font-weight:700;font-size:20px;color:#111827;">
+                    Gatherly
+                  </div>
+                </a>
+              </td>
+            </tr>
+
+            <!-- Card -->
+            <tr>
+              <td>
+                <table class="card" role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;">
+                  <!-- Hero bar -->
+                  <tr>
+                    <td style="height:6px;background:linear-gradient(135deg,#8b5cf6,#3b82f6);"></td>
+                  </tr>
+
+                  <tr>
+                    <td style="padding:28px;">
+                      <h1 class="h1 text" style="margin:0 0 12px 0;font-family:Inter,Segoe UI,Arial,sans-serif;font-size:24px;line-height:1.3;color:#111827;">
+                        Welcome back, ${username} 👋
+                      </h1>
+                      <p class="text" style="margin:0 0 16px 0;font-family:Inter,Segoe UI,Arial,sans-serif;font-size:15px;line-height:1.6;color:#374151;">
+                        You’ve successfully signed in to <strong>Gatherly</strong>. If this was you, no action is needed.
+                      </p>
+
+                
+
+                      <!-- CTA -->
+                      <table role="presentation" cellpadding="0" cellspacing="0" style="margin:8px 0 12px;">
+                        <tr>
+                          <td>
+                            <a class="btn" href="https://gatherly07.netlify.app/user-profile" 
+                               style="display:inline-block;background:linear-gradient(135deg,#6366f1,#3b82f6);color:#ffffff;text-decoration:none;font-family:Inter,Segoe UI,Arial,sans-serif;font-weight:600;font-size:14px;padding:12px 18px;border-radius:10px;">
+                              Go to my dashboard
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+
+                     
+
+                  <!-- Footer strip -->
+                  <tr>
+                    <td style="padding:16px 20px;background:#f9fafb;border-top:1px solid #e5e7eb;">
+                      <p class="muted" style="margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;font-size:12px;color:#6b7280;">
+                        Need help? Reply to this email or reach us at <a href="mailto:gatherly07@gmail.com" style="color:#3b82f6;text-decoration:none;">gatherly07@gmail.com</a>.
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Legal -->
+            <tr>
+              <td align="center" style="padding:16px 8px;">
+                <p class="muted" style="margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;font-size:12px;color:#9ca3af;">
+                  © 2025 Gatherly • You’re receiving this because you logged in to your account.
+                </p>
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+
       `,
-      attachments: [
-        {
-          filename: "ticket-qr.png",
-          content: qrBuffer,
-          cid: "qrimage" // same as used in <img src="cid:qrimage"/>
-        }
-      ],
     };
 
     // Send mail
