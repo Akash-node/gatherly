@@ -185,7 +185,7 @@ const upadteUserAttendence = async (req, res) => {
 //--------------Retreive Attended Users---------------------
 
 const attendedUsers = async (req, res) => {
-  const {eventId} = req.body;
+  const eventId = req.params.eventId;
 
   const userList = await bookingModel.find({
     eventId,
