@@ -184,9 +184,10 @@ const AllUserOfAEvent = async (req, res) => {
 
   const userDetails = await userModel.find({ _id: { $in: userIds } }).select("-password")
 
+
   return res.status(200).json({
     total: userList.length,
-    userDetails,
+    userDetails
   });
 };
 

@@ -2,6 +2,7 @@ const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const bookingModel = require("../models/booking.model");
 const eventModel = require("../models/event.model");
+const userModel = require('../models/user.model')
 const { sendTicketMail } = require("../middleware/ticketgenarator");
 
 //--------------Create Booking----------------------
@@ -141,20 +142,33 @@ const userAlreadyRegisterOrNot = async (req, res) => {
     paymentStatus: "paid",
   });
 
-   res.json({ registered: !!Registered });
-
+  res.json({ registered: !!Registered });
 };
 
 //--------------Update User attendence---------------------
 
 const upadteUserAttendence = async (req, res) => {
   try {
-    const {userId , eventId } = req.body;
+    const { userId, eventId } = req.body;
+
+    const alreadyAttended = await bookingModel.find(
+      {
+        userId,
+        eventId,
+        attend: true,
+      } 
+    );
+
+    if (alreadyAttended) {
+      return res
+        .status(404)
+        .json({ message: "User Already attend this event" });
+    }
 
     const booking = await bookingModel.findOneAndUpdate(
-      { userId, eventId },       // filter
-      { $set: { attend: true }}, // update
-      { new: true }              // return updated document
+      { userId, eventId }, // filter
+      { $set: { attend: true } }, // update
+      { new: true } // return updated document
     );
 
     if (!booking) {
@@ -170,29 +184,37 @@ const upadteUserAttendence = async (req, res) => {
 
 //--------------Retreive Attended Users---------------------
 
-const attendedUsers = async (req,res) => {
-  const eventId = req.params.eventId;
-  
-    const userList = await bookingModel.find({
-      eventId,
-      status: "confirmed",
-      paymentStatus: "paid",
-      attend: true
-    });
-  
-    if (!userList) {
-      return res.status(404).json({
-        message: "No User Found",
-      });
-    }
-    const userIds = userList.map((b) => b.userId);
-  
-    const userDetails = await userModel.find({ _id: { $in: userIds } }).select("-password")
-  
-    return res.status(200).json({
-      total: userList.length,
-      userDetails,
-    });
-}
+const attendedUsers = async (req, res) => {
+  const {eventId} = req.body;
 
-module.exports = { createBooking, verifyPayment, userAlreadyRegisterOrNot, upadteUserAttendence, attendedUsers };
+  const userList = await bookingModel.find({
+    eventId,
+    status: "confirmed",
+    paymentStatus: "paid",
+    attend: true,
+  });
+
+  if (!userList) {
+    return res.status(404).json({
+      message: "No User Found",
+    });
+  }
+  const userIds = userList.map((b) => b.userId);
+
+  const userDetails = await userModel
+    .find({ _id: { $in: userIds } })
+    .select("-password");
+
+  return res.status(200).json({
+    total: userList.length,
+    userDetails,
+  });
+};
+
+module.exports = {
+  createBooking,
+  verifyPayment,
+  userAlreadyRegisterOrNot,
+  upadteUserAttendence,
+  attendedUsers,
+};
