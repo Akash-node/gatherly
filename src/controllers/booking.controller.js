@@ -2,7 +2,7 @@ const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const bookingModel = require("../models/booking.model");
 const eventModel = require("../models/event.model");
-const userModel = require('../models/user.model')
+const userModel = require("../models/user.model");
 const { sendTicketMail } = require("../middleware/ticketgenarator");
 
 //--------------Create Booking----------------------
@@ -151,31 +151,29 @@ const upadteUserAttendence = async (req, res) => {
   try {
     const { userId, eventId } = req.body;
 
-    const alreadyAttended = await bookingModel.find(
-      {
-        userId,
-        eventId,
-        attend: true,
-      } 
-    );
+    const alreadyAttended = await bookingModel.findOne({
+      userId,
+      eventId,
+      attend: true,
+    });
 
     if (alreadyAttended) {
       return res
         .status(404)
         .json({ message: "User Already attend this event" });
+    } else {
+      const booking = await bookingModel.findOneAndUpdate(
+        { userId, eventId }, // filter
+        { $set: { attend: true } }, // update
+        { new: true } // return updated document
+      );
+
+      if (!booking) {
+        return res.status(404).json({ message: "Booking not found" });
+      }
+
+      return res.status(200).json({ message: "Attendance updated", booking });
     }
-
-    const booking = await bookingModel.findOneAndUpdate(
-      { userId, eventId }, // filter
-      { $set: { attend: true } }, // update
-      { new: true } // return updated document
-    );
-
-    if (!booking) {
-      return res.status(404).json({ message: "Booking not found" });
-    }
-
-    return res.status(200).json({ message: "Attendance updated", booking });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: error.message });
