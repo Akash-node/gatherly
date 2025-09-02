@@ -107,7 +107,7 @@ const verifyPayment = async (req, res) => {
     // Send ticket mail 🎟️
     const event = await eventModel.findById(booking.eventId);
     const user = req.user; // assuming middleware provides user info
-    sendTicketMail(
+    await sendTicketMail(
       user.email,
       user.name,
       booking.userId,
