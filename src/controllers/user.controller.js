@@ -38,10 +38,14 @@ const userRegistration = async (req, res) => {
     });
   }
 
+  await sendMail(name , email);
+
   return res.status(201).json({
     message: "user created successfully",
     userCreated,
   });
+
+    
 };
 
 //--------------Login-----------------------
@@ -89,7 +93,7 @@ const userLogin = async (req, res) => {
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 
-  await sendMail(user.email , user.name);
+
 
   return res.status(200).json({
     user,

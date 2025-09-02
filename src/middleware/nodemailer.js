@@ -29,7 +29,6 @@ const sendMail = async (toEmail, username) => {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Welcome</title>
     <style>
-      /* Dark mode tweaks for clients that respect prefers-color-scheme */
       @media (prefers-color-scheme: dark) {
         .wrapper { background:#0f172a !important; }
         .card { background:#111827 !important; border-color:#1f2937 !important; }
@@ -37,7 +36,6 @@ const sendMail = async (toEmail, username) => {
         .muted { color:#9ca3af !important; }
         .btn { background:linear-gradient(135deg,#8b5cf6,#3b82f6) !important; }
       }
-      /* Mobile fix for Outlook on iOS & Gmail */
       @media only screen and (max-width:600px) {
         .container { width:100% !important; padding:16px !important; }
         .h1 { font-size:22px !important; }
@@ -72,14 +70,26 @@ const sendMail = async (toEmail, username) => {
 
                   <tr>
                     <td style="padding:28px;">
+                      <!-- Content -->
                       <h1 class="h1 text" style="margin:0 0 12px 0;font-family:Inter,Segoe UI,Arial,sans-serif;font-size:24px;line-height:1.3;color:#111827;">
-                        Welcome back, ${username} 👋
+                        Welcome, ${username} 👋
                       </h1>
+
                       <p class="text" style="margin:0 0 16px 0;font-family:Inter,Segoe UI,Arial,sans-serif;font-size:15px;line-height:1.6;color:#374151;">
-                        You’ve successfully signed in to <strong>Gatherly</strong>. If this was you, no action is needed.
+                        We’re excited to have you join <strong>Gatherly</strong> — your one-stop platform for discovering and booking amazing events.
                       </p>
 
-                
+                      <p class="text" style="margin:0 0 16px 0;font-family:Inter,Segoe UI,Arial,sans-serif;font-size:15px;line-height:1.6;color:#374151;">
+                        Your account has been successfully created with the email <strong>${toEmail}</strong>.
+                      </p>
+
+                      <p class="text" style="margin:0 0 16px 0;font-family:Inter,Segoe UI,Arial,sans-serif;font-size:15px;line-height:1.6;color:#374151;">
+                        From now on, you can explore upcoming events, purchase tickets securely, and attend events — all in one place.
+                      </p>
+
+                      <p class="text" style="margin:0 0 16px 0;font-family:Inter,Segoe UI,Arial,sans-serif;font-size:15px;line-height:1.6;color:#374151;">
+                        👉 To get started, head over to your personal dashboard.
+                      </p>
 
                       <!-- CTA -->
                       <table role="presentation" cellpadding="0" cellspacing="0" style="margin:8px 0 12px;">
@@ -92,8 +102,8 @@ const sendMail = async (toEmail, username) => {
                           </td>
                         </tr>
                       </table>
-
-                     
+                    </td>
+                  </tr>
 
                   <!-- Footer strip -->
                   <tr>
@@ -111,7 +121,7 @@ const sendMail = async (toEmail, username) => {
             <tr>
               <td align="center" style="padding:16px 8px;">
                 <p class="muted" style="margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;font-size:12px;color:#9ca3af;">
-                  © 2025 Gatherly • You’re receiving this because you logged in to your account.
+                  © 2025 Gatherly • You’re receiving this because you created an account.
                 </p>
               </td>
             </tr>
@@ -123,12 +133,13 @@ const sendMail = async (toEmail, username) => {
   </body>
 </html>
 
+
       `,
     };
 
     // Send mail
     const info = await transporter.sendMail(mailOptions);
-    console.log("✅ Email sent: " + info.response);
+    console.log("✅ Registration Email sent: " + info.response);
   } catch (error) {
     console.error("❌ Error sending email:", error);
   }
