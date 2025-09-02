@@ -59,6 +59,8 @@ const updateEventDetails = async (req, res) => {
     const { title, description, venue, price, capacity, date, time, category } =
       req.body;
 
+      console.log(req.body)
+
     // Validate fields
     if (
       [title, description, venue, date, time, category].some(
