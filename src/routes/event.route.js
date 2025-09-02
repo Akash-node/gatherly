@@ -13,5 +13,4 @@ router.route("/userList/:id").get(verifyJwt,AllUserOfAEvent);
 router.route("/allEvent").get(retreiveEvents);
 router.route("/:id").get(retreiveEventById);
 
-
 module.exports = router;

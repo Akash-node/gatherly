@@ -24,11 +24,10 @@ const eventCreation = async (req, res) => {
   console.log("req.file:", req.file); // 👀 Check if multer gave us a file
 
   if (req.file) {
-  const uploadRes = await uploadOnCloudinary(req.file.path);
-  console.log("uploadRes:", uploadRes); // 👀 See what Cloudinary returns
-  bannerUrl = uploadRes?.secure_url || null;
-}
-
+    const uploadRes = await uploadOnCloudinary(req.file.path);
+    console.log("uploadRes:", uploadRes); // 👀 See what Cloudinary returns
+    bannerUrl = uploadRes?.secure_url || null;
+  }
 
   const newEvent = await eventModel.create({
     title,
@@ -59,7 +58,7 @@ const updateEventDetails = async (req, res) => {
     const { title, description, venue, price, capacity, date, time, category } =
       req.body;
 
-      console.log(req.body)
+    console.log(req.body);
 
     // Validate fields
     if (
@@ -97,9 +96,11 @@ const updateEventDetails = async (req, res) => {
     };
 
     // 🔹 Handle banner update if new file is uploaded
-    if (req.file) {
-      updateData.banner = req.file.secure_url; // Cloudinary gives `path` or `secure_url`
-    }
+   if (req.file) {
+  const uploadRes = await uploadOnCloudinary(req.file.path);
+  updateData.banner = uploadRes.secure_url;
+}
+
 
     // Update event
     const updatedEvent = await eventModel.findByIdAndUpdate(id, updateData, {
@@ -115,7 +116,6 @@ const updateEventDetails = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
-
 
 //--------------Delete Event-----------------------
 
@@ -153,7 +153,6 @@ const retreiveEvents = async (req, res) => {
   }
 };
 
-
 //--------------Retreive Event From ID-----------------------
 
 const retreiveEventById = async (req, res) => {
@@ -184,12 +183,13 @@ const AllUserOfAEvent = async (req, res) => {
   }
   const userIds = userList.map((b) => b.userId);
 
-  const userDetails = await userModel.find({ _id: { $in: userIds } }).select("-password")
-
+  const userDetails = await userModel
+    .find({ _id: { $in: userIds } })
+    .select("-password");
 
   return res.status(200).json({
     total: userList.length,
-    userDetails
+    userDetails,
   });
 };
 
