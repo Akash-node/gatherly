@@ -10,6 +10,7 @@ const SearchEvents = async (req, res) => {
         $or: [
           { title: { $regex: keyword, $options: "i" } },
           { venue: { $regex: keyword, $options: "i" } },
+          { category: { $regex: keyword, $options: "i" } }
         ],
       })
       .sort({ createdAt: -1 });
