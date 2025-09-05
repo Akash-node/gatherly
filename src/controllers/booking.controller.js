@@ -151,14 +151,14 @@ const upadteUserAttendence = async (req, res) => {
   try {
     const { userId, eventId } = req.body;
     const loggedInUserID = req.user.id;
-    console.log(loggedInUserID)
-    const findOwner = await eventModel.find({
-      createdBy: loggedInUserID
-    })
-    if(findOwner.length === 0){
+    const findOwner = await eventModel.findOne({
+      _id: eventId,
+      createdBy: loggedInUserID,
+    });
+    if (!findOwner) {
       return res.status(404).json({
-        message : "You are not the owner of this Event"
-      })
+        message: "You are not the owner of this Event",
+      });
     }
 
     const alreadyAttended = await bookingModel.findOne({
@@ -166,8 +166,6 @@ const upadteUserAttendence = async (req, res) => {
       eventId,
       attend: true,
     });
-
-
 
     if (alreadyAttended) {
       return res
