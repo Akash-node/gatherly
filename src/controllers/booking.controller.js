@@ -154,7 +154,7 @@ const upadteUserAttendence = async (req, res) => {
     const findOwner = await eventModel.find({
       createdBy: loggedInUserID
     })
-    if(!findOwner.length === 0){
+    if(findOwner.length === 0){
       return res.status(404).json({
         message : "You are not the owner of this Event"
       })
