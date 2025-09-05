@@ -150,7 +150,8 @@ const userAlreadyRegisterOrNot = async (req, res) => {
 const upadteUserAttendence = async (req, res) => {
   try {
     const { userId, eventId } = req.body;
-    const loggedInUserID = req.user;
+    const loggedInUserID = req.user.id;
+    console.log(loggedInUserID)
     const findOwner = await eventModel.find({
       createdBy: loggedInUserID
     })
